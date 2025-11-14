@@ -1,8 +1,8 @@
-# Versión 1.2 Estable
+# Versión 1.3 Estable
 
-## HabitFlow v1.2 - Versión Estable
+## HabitFlow v1.3 - Versión Estable
 
-Esta es la versión 1.2 estable de HabitFlow, una aplicación completa de seguimiento de hábitos saludables.
+Esta es la versión 1.3 estable de HabitFlow, una aplicación completa de seguimiento de hábitos saludables con integración de base de datos PostgreSQL.
 
 ### Características Principales
 
@@ -18,6 +18,30 @@ Esta es la versión 1.2 estable de HabitFlow, una aplicación completa de seguim
 
 ### Fecha de Lanzamiento
 Noviembre 2025
+
+### Notas de Versión v1.3
+
+#### Nuevas Características
+- **Integración con PostgreSQL**: Migración completa de MySQL a PostgreSQL
+- **API REST Backend**: Servidor Express.js con endpoints REST para todas las operaciones
+- **Sincronización en Tiempo Real**: Los datos se sincronizan automáticamente con la base de datos PostgreSQL
+- **Persistencia de Datos**: Todos los datos se guardan en PostgreSQL con fallback a LocalStorage
+- **Servidor de Archivos Estáticos**: El servidor Express sirve los archivos HTML, CSS y JS
+- **Normalización de Fechas**: Sistema robusto de normalización de fechas para compatibilidad entre servidor y cliente
+
+#### Mejoras
+- **Carga de Completaciones**: Las completaciones se cargan correctamente desde la base de datos
+- **Estadísticas Mejoradas**: Las estadísticas ahora cargan datos directamente desde PostgreSQL
+- **Botón de Completar**: Corregido con delegación de eventos para funcionar correctamente
+- **Recarga Automática**: Los datos se recargan automáticamente al navegar entre páginas
+- **Logs de Depuración**: Sistema completo de logs para facilitar el debugging
+- **Manejo de Errores**: Mejor manejo de errores con fallback a LocalStorage cuando la API no está disponible
+
+#### Correcciones Técnicas
+- Normalización de formato de fechas (YYYY-MM-DD) para compatibilidad entre PostgreSQL y frontend
+- Delegación de eventos para botones dinámicos
+- Sincronización de datos entre múltiples instancias de HabitsManager
+- Carga asíncrona correcta de hábitos y completaciones en estadísticas
 
 ### Notas de Versión v1.2
 
@@ -54,3 +78,12 @@ Noviembre 2025
 - Controles de progreso mejorados
 - Barra de progreso en tiempo real
 - Favicon personalizado e integrado en la interfaz
+
+#### v1.3 (Noviembre 2025)
+- Migración completa a PostgreSQL
+- API REST backend con Express.js
+- Sincronización automática con base de datos
+- Correcciones en carga de completaciones y estadísticas
+- Mejoras en botón de completar hábito
+- Sistema de normalización de fechas
+- Servidor de archivos estáticos integrado

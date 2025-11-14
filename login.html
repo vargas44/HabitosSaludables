@@ -94,6 +94,20 @@
                             />
                         </div>
                         <div id="login-error" class="mb-4 text-red-500 text-sm hidden"></div>
+                        <div class="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                            <p class="text-xs text-blue-700 dark:text-blue-300 font-medium mb-1">👤 Usuario de Prueba:</p>
+                            <p class="text-xs text-blue-600 dark:text-blue-400 mb-2">
+                                Email: <span class="font-mono">prueba@habitflow.com</span><br>
+                                Contraseña: <span class="font-mono">prueba123</span>
+                            </p>
+                            <button 
+                                type="button"
+                                id="force-test-user-btn"
+                                class="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 underline"
+                            >
+                                ¿No funciona? Forzar creación del usuario
+                            </button>
+                        </div>
                         <button 
                             type="submit" 
                             class="w-full bg-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-green-600 transition-colors"
@@ -177,6 +191,7 @@
         </div>
     </div>
 
+    <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
     <script>
         // Toggle entre Login y Registro
@@ -222,22 +237,55 @@
             localStorage.setItem('habitflow-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
         });
 
+        // Botón para forzar creación del usuario de prueba
+        document.getElementById('force-test-user-btn').addEventListener('click', () => {
+            auth.forceCreateTestUser();
+            alert('Usuario de prueba creado/actualizado. Intenta iniciar sesión nuevamente.');
+            // Auto-completar campos
+            document.getElementById('login-email').value = 'prueba@habitflow.com';
+            document.getElementById('login-password').value = 'prueba123';
+        });
+
         // Manejo de formularios
-        document.getElementById('login-form').addEventListener('submit', (e) => {
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const email = document.getElementById('login-email').value;
+            const email = document.getElementById('login-email').value.trim();
             const password = document.getElementById('login-password').value;
             const errorDiv = document.getElementById('login-error');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            // Limpiar error previo
+            errorDiv.classList.add('hidden');
+            
+            // Deshabilitar botón mientras procesa
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Iniciando sesión...';
 
-            if (auth.login(email, password)) {
-                window.location.href = 'resumen.html';
-            } else {
-                errorDiv.textContent = 'Correo o contraseña incorrectos';
+            try {
+                const success = await auth.login(email, password);
+                
+                if (success) {
+                    window.location.href = 'resumen.html';
+                } else {
+                    errorDiv.textContent = 'Correo o contraseña incorrectos. Verifica las credenciales.';
+                    errorDiv.classList.remove('hidden');
+                    
+                    if (email.toLowerCase().includes('prueba')) {
+                        errorDiv.innerHTML = 'Correo o contraseña incorrectos.<br><small class="text-xs">¿El usuario de prueba no existe? Haz clic en "Forzar creación del usuario" arriba.</small>';
+                    }
+                }
+            } catch (error) {
+                console.error('Error en login:', error);
+                errorDiv.textContent = 'Error al conectar con el servidor. Verifica que el servidor esté corriendo.';
                 errorDiv.classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
         });
 
-        document.getElementById('register-form').addEventListener('submit', (e) => {
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const name = document.getElementById('register-name').value;
             const email = document.getElementById('register-email').value;
@@ -245,6 +293,7 @@
             const confirmPassword = document.getElementById('register-confirm-password').value;
             const errorDiv = document.getElementById('register-error');
             const successDiv = document.getElementById('register-success');
+            const submitBtn = e.target.querySelector('button[type="submit"]');
 
             errorDiv.classList.add('hidden');
             successDiv.classList.add('hidden');
@@ -261,15 +310,31 @@
                 return;
             }
 
-            if (auth.register(name, email, password)) {
-                successDiv.textContent = 'Registro exitoso. Redirigiendo...';
-                successDiv.classList.remove('hidden');
-                setTimeout(() => {
-                    window.location.href = 'resumen.html';
-                }, 1000);
-            } else {
-                errorDiv.textContent = 'Este correo ya está registrado';
+            // Deshabilitar botón mientras procesa
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registrando...';
+
+            try {
+                const success = await auth.register(name, email, password);
+                
+                if (success) {
+                    successDiv.textContent = 'Registro exitoso. Redirigiendo...';
+                    successDiv.classList.remove('hidden');
+                    setTimeout(() => {
+                        window.location.href = 'resumen.html';
+                    }, 1000);
+                } else {
+                    errorDiv.textContent = 'Este correo ya está registrado';
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error en registro:', error);
+                errorDiv.textContent = 'Error al registrar. Verifica que el servidor esté corriendo.';
                 errorDiv.classList.remove('hidden');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
             }
         });
 

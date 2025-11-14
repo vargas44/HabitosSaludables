@@ -6,28 +6,38 @@ class Statistics {
         this.charts = {};
     }
 
-    init() {
+    async init() {
+        // Esperar a que los hábitos se carguen
+        if (this.habitsManager && typeof this.habitsManager.loadHabits === 'function') {
+            await this.habitsManager.loadHabits();
+        }
+        
         this.setupEventListeners();
-        this.loadDayStats();
+        await this.loadDayStats();
     }
 
     setupEventListeners() {
         // Botones de período
-        document.getElementById('period-day').addEventListener('click', () => {
-            this.switchPeriod('day');
+        document.getElementById('period-day').addEventListener('click', async () => {
+            await this.switchPeriod('day');
         });
 
-        document.getElementById('period-week').addEventListener('click', () => {
-            this.switchPeriod('week');
+        document.getElementById('period-week').addEventListener('click', async () => {
+            await this.switchPeriod('week');
         });
 
-        document.getElementById('period-month').addEventListener('click', () => {
-            this.switchPeriod('month');
+        document.getElementById('period-month').addEventListener('click', async () => {
+            await this.switchPeriod('month');
         });
     }
 
-    switchPeriod(period) {
+    async switchPeriod(period) {
         this.currentPeriod = period;
+
+        // Asegurar que los hábitos estén cargados
+        if (this.habitsManager && typeof this.habitsManager.loadHabits === 'function') {
+            await this.habitsManager.loadHabits();
+        }
 
         // Actualizar botones
         document.querySelectorAll('.period-btn').forEach(btn => {
@@ -45,23 +55,37 @@ class Statistics {
             document.getElementById('period-day').classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-text-light', 'dark:text-text-dark');
             document.getElementById('period-day').classList.add('bg-primary', 'text-white');
             document.getElementById('day-stats').classList.remove('hidden');
-            this.loadDayStats();
+            await this.loadDayStats();
         } else if (period === 'week') {
             document.getElementById('period-week').classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-text-light', 'dark:text-text-dark');
             document.getElementById('period-week').classList.add('bg-primary', 'text-white');
             document.getElementById('week-stats').classList.remove('hidden');
-            this.loadWeekStats();
+            await this.loadWeekStats();
         } else if (period === 'month') {
             document.getElementById('period-month').classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-text-light', 'dark:text-text-dark');
             document.getElementById('period-month').classList.add('bg-primary', 'text-white');
             document.getElementById('month-stats').classList.remove('hidden');
-            this.loadMonthStats();
+            await this.loadMonthStats();
         }
     }
 
-    loadDayStats() {
+    async loadDayStats() {
+        // Asegurar que los hábitos estén cargados
+        if (this.habitsManager && typeof this.habitsManager.loadHabits === 'function') {
+            await this.habitsManager.loadHabits();
+        }
+        
         const habits = this.habitsManager.getHabits();
+        console.log('Estadísticas - Hábitos cargados:', habits.length);
+        console.log('Estadísticas - Primer hábito:', habits[0] ? {
+            id: habits[0].id,
+            name: habits[0].name,
+            completions: habits[0].completions,
+            completionsKeys: habits[0].completions ? Object.keys(habits[0].completions) : []
+        } : 'No hay hábitos');
+        
         const today = new Date().toISOString().split('T')[0];
+        console.log('Estadísticas - Fecha de hoy:', today);
         const todayDate = new Date();
         
         // Actualizar fecha
@@ -73,9 +97,14 @@ class Statistics {
         });
 
         // Calcular estadísticas del día
-        const completedToday = habits.filter(habit =>
-            habit.completions && habit.completions[today]
-        ).length;
+        console.log('Estadísticas - Verificando completaciones para hoy:', today);
+        const completedToday = habits.filter(habit => {
+            const hasCompletions = habit.completions && typeof habit.completions === 'object';
+            const isCompleted = hasCompletions && habit.completions[today];
+            console.log(`Hábito ${habit.name}: completions existe=${hasCompletions}, completado hoy=${isCompleted}`, habit.completions);
+            return isCompleted;
+        }).length;
+        console.log('Estadísticas - Hábitos completados hoy:', completedToday);
 
         const totalHabits = habits.length;
         const completionRate = totalHabits > 0
@@ -127,7 +156,12 @@ class Statistics {
         }
     }
 
-    loadWeekStats() {
+    async loadWeekStats() {
+        // Asegurar que los hábitos estén cargados
+        if (this.habitsManager && typeof this.habitsManager.loadHabits === 'function') {
+            await this.habitsManager.loadHabits();
+        }
+        
         const habits = this.habitsManager.getHabits();
         const today = new Date();
         const startOfWeek = new Date(today);
@@ -178,7 +212,12 @@ class Statistics {
         this.renderWeekCalendar(weekData);
     }
 
-    loadMonthStats() {
+    async loadMonthStats() {
+        // Asegurar que los hábitos estén cargados
+        if (this.habitsManager && typeof this.habitsManager.loadHabits === 'function') {
+            await this.habitsManager.loadHabits();
+        }
+        
         const habits = this.habitsManager.getHabits();
         const today = new Date();
         const year = today.getFullYear();
@@ -442,4 +481,5 @@ class Statistics {
         });
     }
 }
+
 

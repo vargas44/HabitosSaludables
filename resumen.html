@@ -304,6 +304,7 @@
         </div>
     </div>
 
+    <script src="js/api.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/habits.js"></script>
     <script>
@@ -353,7 +354,9 @@
 
         // Inicializar gestión de hábitos
         const habitsManager = new HabitsManager();
-        habitsManager.init();
+        habitsManager.init().catch(error => {
+            console.error('Error al inicializar hábitos:', error);
+        });
     </script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 # Schema de Base de Datos - HabitFlow
 
-Este documento describe el schema de base de datos para HabitFlow v1.2.
+Este documento describe el schema de base de datos para HabitFlow v1.3.
 
 ## Descripción General
 

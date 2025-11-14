@@ -353,7 +353,7 @@ class ProfileManager {
             profile: profile,
             habits: habits,
             exportDate: new Date().toISOString(),
-            version: '1.2'
+            version: '1.3'
         };
 
         const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -539,7 +539,7 @@ class ProfileManager {
         doc.setTextColor(...lightGray);
         doc.setFont('helvetica', 'italic');
         doc.text(`Generado el ${new Date().toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}`, margin, footerY);
-        doc.text('HabitFlow v1.2 - Transforma tu vida un hábito a la vez', pageWidth - margin, footerY, { align: 'right' });
+        doc.text('HabitFlow v1.3 - Transforma tu vida un hábito a la vez', pageWidth - margin, footerY, { align: 'right' });
 
         // Guardar PDF
         const fileName = `habitflow-reporte-${currentUser.name}-${new Date().toISOString().split('T')[0]}.pdf`;

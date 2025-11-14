@@ -1,6 +1,6 @@
 # HabitFlow - Aplicación de Seguimiento de Hábitos Saludables
 
-**Versión 1.2 Estable**
+**Versión 1.3 Estable**
 
 Una aplicación web responsive para el seguimiento y gestión de hábitos saludables, diseñada con un enfoque en la experiencia del usuario y la motivación constante.
 
