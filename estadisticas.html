@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>HabitFlow - Estadísticas</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+    <link rel="alternate icon" href="favicon.ico"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10B981',
+                        'background-light': '#F9FAFB',
+                        'background-dark': '#111827',
+                        'card-light': '#FFFFFF',
+                        'card-dark': '#1F2937',
+                        'text-light': '#1F2937',
+                        'text-dark': '#F9FAFB',
+                        'text-secondary-light': '#6B7280',
+                        'text-secondary-dark': '#9CA3AF',
+                        'border-light': '#E5E7EB',
+                        'border-dark': '#374151',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        DEFAULT: '0.5rem',
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-sans">
+    <!-- Header -->
+    <header class="bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="favicon.svg" alt="HabitFlow" class="w-8 h-8 dark:invert dark:brightness-0 dark:contrast-200">
+                <nav class="hidden md:flex space-x-4">
+                    <a href="resumen.html" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-light dark:hover:text-text-dark">Resumen</a>
+                    <a href="estadisticas.html" class="text-primary font-medium">Estadísticas</a>
+                    <a href="perfil.html" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-light dark:hover:text-text-dark">Perfil</a>
+                </nav>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="user-name" class="text-text-secondary-light dark:text-text-secondary-dark hidden md:block"></span>
+                <button id="theme-toggle" class="text-text-light dark:text-text-dark">
+                    <span class="material-icons-outlined">dark_mode</span>
+                </button>
+                <button id="logout-btn" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-red-500">
+                    <span class="material-icons-outlined">logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Header de la página -->
+        <div class="mb-8">
+            <h2 class="text-3xl font-bold text-text-light dark:text-text-dark mb-2">Estadísticas de Hábitos</h2>
+            <p class="text-text-secondary-light dark:text-text-secondary-dark">Analiza tu progreso por día, semana y mes</p>
+        </div>
+
+        <!-- Selector de período -->
+        <div class="bg-card-light dark:bg-card-dark p-4 rounded-lg mb-6">
+            <div class="flex flex-wrap gap-2">
+                <button id="period-day" class="period-btn px-4 py-2 rounded-lg bg-primary text-white font-medium">
+                    Día
+                </button>
+                <button id="period-week" class="period-btn px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark hover:bg-gray-300 dark:hover:bg-gray-600 font-medium">
+                    Semana
+                </button>
+                <button id="period-month" class="period-btn px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 text-text-light dark:text-text-dark hover:bg-gray-300 dark:hover:bg-gray-600 font-medium">
+                    Mes
+                </button>
+            </div>
+        </div>
+
+        <!-- Estadísticas del Día -->
+        <div id="day-stats" class="stats-section">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Hábitos Completados</p>
+                            <p class="text-3xl font-bold text-text-light dark:text-text-dark" id="day-completed">0</p>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark" id="day-date"></p>
+                        </div>
+                        <div class="bg-green-500/10 p-3 rounded-full">
+                            <span class="material-icons-outlined text-green-500">check_circle</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Tasa de Cumplimiento</p>
+                            <p class="text-3xl font-bold text-text-light dark:text-text-dark" id="day-rate">0%</p>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">del total</p>
+                        </div>
+                        <div class="bg-blue-500/10 p-3 rounded-full">
+                            <span class="material-icons-outlined text-blue-500">trending_up</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Hábitos por Categoría</p>
+                            <p class="text-3xl font-bold text-text-light dark:text-text-dark" id="day-categories">0</p>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">categorías activas</p>
+                        </div>
+                        <div class="bg-purple-500/10 p-3 rounded-full">
+                            <span class="material-icons-outlined text-purple-500">category</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg mb-6">
+                <h3 class="text-lg font-semibold text-text-light dark:text-text-dark mb-4">Hábitos Completados Hoy</h3>
+                <div id="day-habits-list" class="space-y-3">
+                    <!-- Lista de hábitos del día -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas de la Semana -->
+        <div id="week-stats" class="stats-section hidden">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Días Completados</p>
+                            <p class="text-3xl font-bold text-text-light dark:text-text-dark" id="week-days">0/7</p>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">esta semana</p>
+                        </div>
+                        <div class="bg-green-500/10 p-3 rounded-full">
+                            <span class="material-icons-outlined text-green-500">calendar_today</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Tasa de Cumplimiento</p>
+                            <p class="text-3xl font-bold text-text-light dark:text-text-dark" id="week-rate">0%</p>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">semanal</p>
+                        </div>
+                        <div class="bg-blue-500/10 p-3 rounded-full">
+                            <span class="material-icons-outlined text-blue-500">pie_chart</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Total Completaciones</p>
+                            <p class="text-3xl font-bold text-text-light dark:text-text-dark" id="week-total">0</p>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">esta semana</p>
+                        </div>
+                        <div class="bg-yellow-500/10 p-3 rounded-full">
+                            <span class="material-icons-outlined text-yellow-500">checklist</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Promedio Diario</p>
+                            <p class="text-3xl font-bold text-text-light dark:text-text-dark" id="week-average">0</p>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">hábitos/día</p>
+                        </div>
+                        <div class="bg-purple-500/10 p-3 rounded-full">
+                            <span class="material-icons-outlined text-purple-500">bar_chart</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg mb-6">
+                <h3 class="text-lg font-semibold text-text-light dark:text-text-dark mb-4">Progreso Semanal</h3>
+                <canvas id="week-chart"></canvas>
+            </div>
+
+            <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-text-light dark:text-text-dark mb-4">Calendario Semanal</h3>
+                <div id="week-calendar" class="grid grid-cols-7 gap-2">
+                    <!-- Calendario semanal -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Estadísticas del Mes -->
+        <div id="month-stats" class="stats-section hidden">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Días Activos</p>
+                            <p class="text-3xl font-bold text-text-light dark:text-text-dark" id="month-days">0</p>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">este mes</p>
+                        </div>
+                        <div class="bg-green-500/10 p-3 rounded-full">
+                            <span class="material-icons-outlined text-green-500">calendar_month</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Tasa de Cumplimiento</p>
+                            <p class="text-3xl font-bold text-text-light dark:text-text-dark" id="month-rate">0%</p>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">mensual</p>
+                        </div>
+                        <div class="bg-blue-500/10 p-3 rounded-full">
+                            <span class="material-icons-outlined text-blue-500">trending_up</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Total Completaciones</p>
+                            <p class="text-3xl font-bold text-text-light dark:text-text-dark" id="month-total">0</p>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">este mes</p>
+                        </div>
+                        <div class="bg-yellow-500/10 p-3 rounded-full">
+                            <span class="material-icons-outlined text-yellow-500">checklist</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark">Mejor Día</p>
+                            <p class="text-3xl font-bold text-text-light dark:text-text-dark" id="month-best">0</p>
+                            <p class="text-sm text-text-secondary-light dark:text-text-secondary-dark" id="month-best-date">hábitos</p>
+                        </div>
+                        <div class="bg-purple-500/10 p-3 rounded-full">
+                            <span class="material-icons-outlined text-purple-500">star</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg mb-6">
+                <h3 class="text-lg font-semibold text-text-light dark:text-text-dark mb-4">Progreso Mensual</h3>
+                <canvas id="month-chart"></canvas>
+            </div>
+
+            <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+                <h3 class="text-lg font-semibold text-text-light dark:text-text-dark mb-4">Calendario Mensual</h3>
+                <div id="month-calendar" class="grid grid-cols-7 gap-2">
+                    <!-- Calendario mensual -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script src="js/habits.js"></script>
+    <script src="js/statistics.js"></script>
+    <script>
+        // Verificar autenticación
+        if (!auth.requireAuth()) {
+            // Redirige a login si no está autenticado
+        }
+
+        // Mostrar nombre de usuario
+        const currentUser = auth.getCurrentUser();
+        if (currentUser) {
+            document.getElementById('user-name').textContent = currentUser.name;
+        }
+
+        // Toggle de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        const darkMode = localStorage.getItem('habitflow-theme') === 'dark';
+        if (darkMode) {
+            document.documentElement.classList.add('dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('habitflow-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                auth.logout();
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Inicializar estadísticas
+        const habitsManager = new HabitsManager();
+        const statistics = new Statistics(habitsManager);
+        statistics.init();
+    </script>
+</body>
+</html>
+

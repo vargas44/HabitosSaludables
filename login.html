@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>HabitFlow - Iniciar Sesión</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+    <link rel="alternate icon" href="favicon.ico"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10B981',
+                        'background-light': '#F9FAFB',
+                        'background-dark': '#111827',
+                        'card-light': '#FFFFFF',
+                        'card-dark': '#1F2937',
+                        'text-light': '#1F2937',
+                        'text-dark': '#F9FAFB',
+                        'text-secondary-light': '#6B7280',
+                        'text-secondary-dark': '#9CA3AF',
+                        'border-light': '#E5E7EB',
+                        'border-dark': '#374151',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        DEFAULT: '0.5rem',
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-sans">
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md">
+            <!-- Logo y Título -->
+            <div class="text-center mb-8">
+                <div class="flex justify-center mb-2">
+                    <img src="favicon.svg" alt="HabitFlow" class="w-16 h-16 dark:invert dark:brightness-0 dark:contrast-200">
+                </div>
+                <p class="text-text-secondary-light dark:text-text-secondary-dark">Gestiona tus hábitos saludables</p>
+            </div>
+
+            <!-- Contenedor de Formularios -->
+            <div class="bg-card-light dark:bg-card-dark rounded-lg shadow-lg p-8">
+                <!-- Tabs para Login y Registro -->
+                <div class="flex mb-6 border-b border-border-light dark:border-border-dark">
+                    <button id="login-tab" class="flex-1 py-3 px-4 text-center font-medium text-primary border-b-2 border-primary">
+                        Iniciar Sesión
+                    </button>
+                    <button id="register-tab" class="flex-1 py-3 px-4 text-center font-medium text-text-secondary-light dark:text-text-secondary-dark hover:text-text-light dark:hover:text-text-dark">
+                        Registrarse
+                    </button>
+                </div>
+
+                <!-- Formulario de Login -->
+                <div id="login-form-container" class="space-y-4">
+                    <form id="login-form">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">
+                                Correo electrónico
+                            </label>
+                            <input 
+                                type="email" 
+                                id="login-email" 
+                                required
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                                placeholder="tu@email.com"
+                            />
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">
+                                Contraseña
+                            </label>
+                            <input 
+                                type="password" 
+                                id="login-password" 
+                                required
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                                placeholder="••••••••"
+                            />
+                        </div>
+                        <div id="login-error" class="mb-4 text-red-500 text-sm hidden"></div>
+                        <button 
+                            type="submit" 
+                            class="w-full bg-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-green-600 transition-colors"
+                        >
+                            Iniciar Sesión
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Formulario de Registro -->
+                <div id="register-form-container" class="space-y-4 hidden">
+                    <form id="register-form">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">
+                                Nombre completo
+                            </label>
+                            <input 
+                                type="text" 
+                                id="register-name" 
+                                required
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                                placeholder="Juan Pérez"
+                            />
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">
+                                Correo electrónico
+                            </label>
+                            <input 
+                                type="email" 
+                                id="register-email" 
+                                required
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                                placeholder="tu@email.com"
+                            />
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">
+                                Contraseña
+                            </label>
+                            <input 
+                                type="password" 
+                                id="register-password" 
+                                required
+                                minlength="6"
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                                placeholder="Mínimo 6 caracteres"
+                            />
+                        </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">
+                                Confirmar contraseña
+                            </label>
+                            <input 
+                                type="password" 
+                                id="register-confirm-password" 
+                                required
+                                minlength="6"
+                                class="w-full px-4 py-2 border border-border-light dark:border-border-dark rounded-lg bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                                placeholder="Repite tu contraseña"
+                            />
+                        </div>
+                        <div id="register-error" class="mb-4 text-red-500 text-sm hidden"></div>
+                        <div id="register-success" class="mb-4 text-green-500 text-sm hidden"></div>
+                        <button 
+                            type="submit" 
+                            class="w-full bg-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-green-600 transition-colors"
+                        >
+                            Registrarse
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Toggle de Tema -->
+            <div class="text-center mt-6">
+                <button id="theme-toggle" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-light dark:hover:text-text-dark">
+                    <span class="material-icons-outlined">dark_mode</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // Toggle entre Login y Registro
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginFormContainer = document.getElementById('login-form-container');
+        const registerFormContainer = document.getElementById('register-form-container');
+
+        loginTab.addEventListener('click', () => {
+            loginTab.classList.add('text-primary', 'border-b-2', 'border-primary');
+            loginTab.classList.remove('text-text-secondary-light', 'dark:text-text-secondary-dark');
+            registerTab.classList.remove('text-primary', 'border-b-2', 'border-primary');
+            registerTab.classList.add('text-text-secondary-light', 'dark:text-text-secondary-dark');
+            loginFormContainer.classList.remove('hidden');
+            registerFormContainer.classList.add('hidden');
+            document.getElementById('login-error').classList.add('hidden');
+            document.getElementById('register-error').classList.add('hidden');
+            document.getElementById('register-success').classList.add('hidden');
+        });
+
+        registerTab.addEventListener('click', () => {
+            registerTab.classList.add('text-primary', 'border-b-2', 'border-primary');
+            registerTab.classList.remove('text-text-secondary-light', 'dark:text-text-secondary-dark');
+            loginTab.classList.remove('text-primary', 'border-b-2', 'border-primary');
+            loginTab.classList.add('text-text-secondary-light', 'dark:text-text-secondary-dark');
+            registerFormContainer.classList.remove('hidden');
+            loginFormContainer.classList.add('hidden');
+            document.getElementById('login-error').classList.add('hidden');
+            document.getElementById('register-error').classList.add('hidden');
+            document.getElementById('register-success').classList.add('hidden');
+        });
+
+        // Toggle de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        const darkMode = localStorage.getItem('habitflow-theme') === 'dark';
+
+        if (darkMode) {
+            document.documentElement.classList.add('dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('habitflow-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Manejo de formularios
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const errorDiv = document.getElementById('login-error');
+
+            if (auth.login(email, password)) {
+                window.location.href = 'resumen.html';
+            } else {
+                errorDiv.textContent = 'Correo o contraseña incorrectos';
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('register-name').value;
+            const email = document.getElementById('register-email').value;
+            const password = document.getElementById('register-password').value;
+            const confirmPassword = document.getElementById('register-confirm-password').value;
+            const errorDiv = document.getElementById('register-error');
+            const successDiv = document.getElementById('register-success');
+
+            errorDiv.classList.add('hidden');
+            successDiv.classList.add('hidden');
+
+            if (password !== confirmPassword) {
+                errorDiv.textContent = 'Las contraseñas no coinciden';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (password.length < 6) {
+                errorDiv.textContent = 'La contraseña debe tener al menos 6 caracteres';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            if (auth.register(name, email, password)) {
+                successDiv.textContent = 'Registro exitoso. Redirigiendo...';
+                successDiv.classList.remove('hidden');
+                setTimeout(() => {
+                    window.location.href = 'resumen.html';
+                }, 1000);
+            } else {
+                errorDiv.textContent = 'Este correo ya está registrado';
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        // Verificar si ya está logueado
+        if (auth.isLoggedIn()) {
+            window.location.href = 'resumen.html';
+        }
+    </script>
+</body>
+</html>
+

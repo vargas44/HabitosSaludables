@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>HabitFlow - Mi Perfil</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+    <link rel="alternate icon" href="favicon.ico"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#10B981',
+                        'background-light': '#F9FAFB',
+                        'background-dark': '#111827',
+                        'card-light': '#FFFFFF',
+                        'card-dark': '#1F2937',
+                        'text-light': '#1F2937',
+                        'text-dark': '#F9FAFB',
+                        'text-secondary-light': '#6B7280',
+                        'text-secondary-dark': '#9CA3AF',
+                        'border-light': '#E5E7EB',
+                        'border-dark': '#374151',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        DEFAULT: '0.5rem',
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-sans">
+    <!-- Header -->
+    <header class="bg-card-light dark:bg-card-dark border-b border-border-light dark:border-border-dark">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="favicon.svg" alt="HabitFlow" class="w-8 h-8 dark:invert dark:brightness-0 dark:contrast-200">
+                <nav class="hidden md:flex space-x-4">
+                    <a href="resumen.html" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-light dark:hover:text-text-dark">Resumen</a>
+                    <a href="estadisticas.html" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-light dark:hover:text-text-dark">Estadísticas</a>
+                    <a href="perfil.html" class="text-primary font-medium">Perfil</a>
+                </nav>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="user-name" class="text-text-secondary-light dark:text-text-secondary-dark hidden md:block"></span>
+                <button id="theme-toggle" class="text-text-light dark:text-text-dark">
+                    <span class="material-icons-outlined">dark_mode</span>
+                </button>
+                <button id="logout-btn" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-red-500">
+                    <span class="material-icons-outlined">logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- Header de la página -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h2 class="text-3xl font-bold text-text-light dark:text-text-dark">Mi Perfil</h2>
+                <p class="text-text-secondary-light dark:text-text-secondary-dark">Gestiona tu información personal</p>
+            </div>
+            <button id="edit-profile-btn" class="bg-primary text-white px-4 py-2 rounded-lg flex items-center space-x-2 hover:bg-green-600 transition-colors">
+                <span class="material-icons-outlined text-base">edit</span>
+                <span>Editar Perfil</span>
+            </button>
+        </div>
+
+        <!-- Información Personal -->
+        <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg mb-6">
+            <div class="flex items-start space-x-4 mb-6">
+                <div class="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                    <span class="material-icons-outlined text-2xl text-text-secondary-light dark:text-text-secondary-dark">person</span>
+                </div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-semibold text-text-light dark:text-text-dark mb-1" id="profile-full-name">Usuario</h3>
+                    <p class="text-text-secondary-light dark:text-text-secondary-dark mb-4" id="profile-biography">Sin biografía</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark">Correo electrónico:</span>
+                            <p class="font-medium text-text-light dark:text-text-dark" id="profile-email">-</p>
+                        </div>
+                        <div>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark">Miembro desde:</span>
+                            <p class="font-medium text-text-light dark:text-text-dark" id="profile-created">-</p>
+                        </div>
+                        <div>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark">Zona horaria:</span>
+                            <p class="font-medium text-text-light dark:text-text-dark" id="profile-timezone">-</p>
+                        </div>
+                        <div>
+                            <span class="text-text-secondary-light dark:text-text-secondary-dark">Hora local:</span>
+                            <p class="font-medium text-text-light dark:text-text-dark" id="profile-local-time">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Objetivos Personales -->
+        <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg mb-6">
+            <h3 class="text-lg font-semibold text-text-light dark:text-text-dark mb-4">Objetivos personales</h3>
+            <div id="profile-goals" class="flex flex-wrap gap-2">
+                <!-- Los objetivos se cargarán aquí -->
+            </div>
+        </div>
+
+        <!-- Estadísticas -->
+        <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg mb-6">
+            <h3 class="text-lg font-semibold text-text-light dark:text-text-dark mb-4 flex items-center">
+                <span class="material-icons-outlined mr-2">bar_chart</span>
+                Estadísticas
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="material-icons-outlined text-text-secondary-light dark:text-text-secondary-dark mr-3">checklist</span>
+                        <span class="text-text-light dark:text-text-dark">Hábitos totales</span>
+                    </div>
+                    <span class="font-semibold text-text-light dark:text-text-dark" id="stats-total-habits">0</span>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="material-icons-outlined text-text-secondary-light dark:text-text-secondary-dark mr-3">calendar_today</span>
+                        <span class="text-text-light dark:text-text-dark">Completados hoy</span>
+                    </div>
+                    <span class="font-semibold text-text-light dark:text-text-dark" id="stats-completed-today">0</span>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="material-icons-outlined text-text-secondary-light dark:text-text-secondary-dark mr-3">local_fire_department</span>
+                        <span class="text-text-light dark:text-text-dark">Racha actual</span>
+                    </div>
+                    <span class="font-semibold text-text-light dark:text-text-dark" id="stats-current-streak">0 días</span>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="material-icons-outlined text-text-secondary-light dark:text-text-secondary-dark mr-3">trending_up</span>
+                        <span class="text-text-light dark:text-text-dark">Mejor racha</span>
+                    </div>
+                    <span class="font-semibold text-text-light dark:text-text-dark" id="stats-best-streak">0 días</span>
+                </div>
+                <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                    <div class="flex items-center">
+                        <span class="material-icons-outlined text-text-secondary-light dark:text-text-secondary-dark mr-3">person</span>
+                        <span class="text-text-light dark:text-text-dark">Días activos</span>
+                    </div>
+                    <span class="font-semibold text-text-light dark:text-text-dark" id="stats-active-days">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="bg-card-light dark:bg-card-dark p-6 rounded-lg">
+            <h3 class="text-lg font-semibold text-text-light dark:text-text-dark mb-4">Acciones</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="relative group">
+                    <button id="export-data-btn" class="w-full flex items-center justify-center p-4 border border-border-light dark:border-border-dark rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                        <span class="material-icons-outlined mr-2 text-text-secondary-light dark:text-text-secondary-dark">download</span>
+                        <span class="text-text-light dark:text-text-dark">Exportar Datos</span>
+                    </button>
+                    <div id="export-menu" class="hidden absolute top-full left-0 mt-2 w-full bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark rounded-lg shadow-lg z-10">
+                        <button id="export-json-btn" class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 text-text-light dark:text-text-dark flex items-center">
+                            <span class="material-icons-outlined mr-2 text-sm">code</span>
+                            <span>Exportar JSON</span>
+                        </button>
+                        <button id="export-pdf-btn" class="w-full text-left px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-800 text-text-light dark:text-text-dark flex items-center">
+                            <span class="material-icons-outlined mr-2 text-sm">picture_as_pdf</span>
+                            <span>Exportar PDF</span>
+                        </button>
+                    </div>
+                </div>
+                <button id="logout-profile-btn" class="flex items-center justify-center p-4 border border-border-light dark:border-border-dark rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+                    <span class="material-icons-outlined mr-2 text-text-secondary-light dark:text-text-secondary-dark">logout</span>
+                    <span class="text-text-light dark:text-text-dark">Cerrar Sesión</span>
+                </button>
+                <button id="delete-account-btn" class="flex items-center justify-center p-4 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
+                    <span class="material-icons-outlined mr-2">delete</span>
+                    <span>Eliminar Cuenta</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para editar perfil -->
+    <div id="edit-profile-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-card-light dark:bg-card-dark rounded-lg p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-semibold text-text-light dark:text-text-dark">Editar Perfil</h3>
+                <button id="close-edit-modal" class="text-text-secondary-light dark:text-text-secondary-dark hover:text-text-light dark:hover:text-text-dark">
+                    <span class="material-icons-outlined">close</span>
+                </button>
+            </div>
+            
+            <form id="edit-profile-form" class="space-y-6">
+                <!-- Información Básica -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">Nombre completo</label>
+                        <input 
+                            type="text" 
+                            id="edit-full-name" 
+                            required
+                            class="w-full px-3 py-2 border border-border-light dark:border-border-dark rounded-lg bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">Correo electrónico</label>
+                        <input 
+                            type="email" 
+                            id="edit-email" 
+                            required
+                            class="w-full px-3 py-2 border border-border-light dark:border-border-dark rounded-lg bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                        />
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">Biografía</label>
+                    <textarea 
+                        id="edit-biography" 
+                        rows="3"
+                        class="w-full px-3 py-2 border border-border-light dark:border-border-dark rounded-lg bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary"
+                        placeholder="Cuéntanos sobre ti..."
+                    ></textarea>
+                </div>
+                
+                <!-- Zona Horaria -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">Zona horaria</label>
+                        <select id="edit-timezone" class="w-full px-3 py-2 border border-border-light dark:border-border-dark rounded-lg bg-card-light dark:bg-card-dark text-text-light dark:text-text-dark focus:outline-none focus:ring-2 focus:ring-primary">
+                            <option value="America/Argentina/Buenos_Aires">Buenos Aires, Argentina (GMT-3)</option>
+                            <option value="America/Mexico_City">Ciudad de México (GMT-6)</option>
+                            <option value="America/New_York">Nueva York (GMT-5)</option>
+                            <option value="America/Los_Angeles">Los Ángeles (GMT-8)</option>
+                            <option value="Europe/Madrid">Madrid (GMT+1)</option>
+                            <option value="Europe/London">Londres (GMT+0)</option>
+                            <option value="Asia/Tokyo">Tokio (GMT+9)</option>
+                            <option value="Australia/Sydney">Sídney (GMT+10)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-2">Hora actual</label>
+                        <div class="px-3 py-2 border border-border-light dark:border-border-dark rounded-lg bg-gray-50 dark:bg-gray-800 text-text-light dark:text-text-dark" id="current-time-display">
+                            -
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Objetivos Personales -->
+                <div>
+                    <label class="block text-sm font-medium text-text-light dark:text-text-dark mb-3">Objetivos personales</label>
+                    <div id="goals-container" class="space-y-3">
+                        <!-- Los objetivos se cargarán aquí -->
+                    </div>
+                    <button type="button" id="add-goal" class="mt-2 text-primary hover:underline flex items-center">
+                        <span class="material-icons-outlined text-sm mr-1">add</span>
+                        Agregar objetivo
+                    </button>
+                </div>
+                
+                <!-- Botones de Acción -->
+                <div class="flex justify-end space-x-3 pt-4 border-t border-border-light dark:border-border-dark">
+                    <button type="button" id="cancel-edit-profile" class="px-4 py-2 text-text-secondary-light dark:text-text-secondary-dark hover:text-text-light dark:hover:text-text-dark">Cancelar</button>
+                    <button type="submit" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-green-600 transition-colors">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/habits.js"></script>
+    <script src="js/profile.js"></script>
+    <script>
+        // Verificar autenticación
+        if (!auth.requireAuth()) {
+            // Redirige a login si no está autenticado
+        }
+
+        // Mostrar nombre de usuario
+        const currentUser = auth.getCurrentUser();
+        if (currentUser) {
+            document.getElementById('user-name').textContent = currentUser.name;
+        }
+
+        // Toggle de tema
+        const themeToggle = document.getElementById('theme-toggle');
+        const darkMode = localStorage.getItem('habitflow-theme') === 'dark';
+        if (darkMode) {
+            document.documentElement.classList.add('dark');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('habitflow-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Logout
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            if (confirm('¿Estás seguro de que quieres cerrar sesión?')) {
+                auth.logout();
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Inicializar gestión de perfil
+        const profileManager = new ProfileManager();
+        profileManager.init();
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>HabitFlow - Redirigiendo...</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
+    <link rel="alternate icon" href="favicon.ico"/>
+    <script src="js/auth.js"></script>
+    <script>
+        // Redirigir según el estado de autenticación
+        if (auth.isLoggedIn()) {
+            window.location.href = 'resumen.html';
+        } else {
+            window.location.href = 'login.html';
+        }
+    </script>
+</head>
+<body>
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; font-family: Arial, sans-serif;">
+        <p>Redirigiendo...</p>
+    </div>
+</body>
+</html>

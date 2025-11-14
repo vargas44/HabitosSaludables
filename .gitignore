@@ -1,0 +1,34 @@
+# Archivos de configuración sensibles
+database/config.js
+*.env
+.env.local
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Archivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Archivos temporales
+*.log
+*.tmp
+*.temp
+
+# Node modules (si se agrega en el futuro)
+node_modules/
+package-lock.json
+
+# Archivos de backup
+*.bak
+*.backup
+
+# Archivos de exportación de usuarios (datos sensibles)
+*-data-*.json
+*-data-*.pdf
+
